@@ -14,6 +14,7 @@ public class Main {
         for(int y : a){
             System.out.print(y + " ");
         }
+
         System.out.println();
         System.out.println("----------------");
 
