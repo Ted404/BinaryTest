@@ -1,31 +1,39 @@
 package org.example;
 
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
 
-        int DecimalInput = 255;
-        int BinaryInput = 1100100;
+        int decimalInput = 255;
+        int binaryInput = 1100100;
 
-        int [] a = BinaryTest.DecimalToBinary(DecimalInput);
-        System.out.println("Input in decimal: " + DecimalInput);
+        // Test Decimal to Binary
+        int[] binaryArray = BinaryTest.decimalToBinary(decimalInput);
+        System.out.println("Input in decimal: " + decimalInput);
+        System.out.println("Result in binary (Array): " + Arrays.toString(binaryArray));
 
-        System.out.print("Result in binary: " );
-        for(int y : a){
-            System.out.print(y + " ");
-        }
+        // Test Bitwise Decimal to Binary
+        int[] bitwiseArray = BinaryTest.decimalToBinaryBitwise(decimalInput);
+        System.out.println("Result in binary (Bitwise): " + Arrays.toString(bitwiseArray));
 
-        System.out.println();
         System.out.println("----------------");
 
-        System.out.print("Input in binary: " + BinaryInput);
-        System.out.println();
-        System.out.print("Result in decimal: ");
-        int b = BinaryTest.BinaryToDecimal(1100100);
-        System.out.println(b);
+        // Test Binary to Decimal
+        System.out.println("Input in binary: " + binaryInput);
+        int decimalResult = BinaryTest.binaryToDecimal(binaryInput);
+        System.out.println("Result in decimal: " + decimalResult);
 
-        System.out.println();
-        int[] arr = new int[]{0,0,1,1};
-        System.out.println(BinaryTest.ArrayToNumber(arr));
+        // Test Off-by-one fix (Binary 11 should be 3)
+        int smallBinary = 11;
+        System.out.println("Input small binary: " + smallBinary);
+        System.out.println("Result in decimal (Should be 3): " + BinaryTest.binaryToDecimal(smallBinary));
+
+        System.out.println("----------------");
+        
+        // Test ArrayToNumber
+        int[] arr = new int[]{0, 0, 1, 1};
+        System.out.println("Array: " + Arrays.toString(arr));
+        System.out.println("Array to Number: " + BinaryTest.arrayToNumber(arr));
     }
 }

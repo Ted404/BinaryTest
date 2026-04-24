@@ -2,7 +2,7 @@ package org.example;
 
 public class BinaryTest {
 
-    public static int[] DecimalToBinary (int decimalNumber){
+    public static int[] decimalToBinary(int decimalNumber) {
         if (decimalNumber == 0) {
             return new int[]{0};
         }
@@ -10,81 +10,88 @@ public class BinaryTest {
         int[] temp = new int[32];
         int counter = 0;
 
-        for (int i = decimalNumber; i>0; i = i/2) {
-        temp[counter] = i%2;
-        counter++;
+        for (int i = decimalNumber; i > 0; i = i / 2) {
+            temp[counter] = i % 2;
+            counter++;
         }
         int[] reversed = new int[counter];
 
-        for (int i = counter-1, j = 0; i >=0; i--, j++) {
+        for (int i = counter - 1, j = 0; i >= 0; i--, j++) {
             reversed[j] = temp[i];
         }
 
         return reversed;
     }
 
-    public static int ArrayToNumber(int [] arrayToCovert){
+    /**
+     * Bitwise implementation of decimal to binary conversion.
+     * This is the more standard way to handle binary in Java.
+     */
+    public static int[] decimalToBinaryBitwise(int decimalNumber) {
+        if (decimalNumber == 0) return new int[]{0};
+        
+        // Calculate number of bits needed
+        int bits = (int) (Math.log(decimalNumber) / Math.log(2)) + 1;
+        int[] result = new int[bits];
+        
+        for (int i = bits - 1; i >= 0; i--) {
+            result[i] = decimalNumber & 1; // Get the last bit
+            decimalNumber >>= 1;          // Shift right by 1
+        }
+        return result;
+    }
 
+    public static int arrayToNumber(int[] arrayToConvert) {
         StringBuilder result = new StringBuilder();
-        for(int x : arrayToCovert){
+        for (int x : arrayToConvert) {
             result.append(x);
         }
-
+        // Using Long to handle larger bit strings before they overflow
         return Integer.parseInt(result.toString());
     }
 
-    //* works only for any positive numbers
-    private static int powerOf(int number, int power){
-        int result = number;
-        if(power == 0){
-            return 1;
-        }
-        for (int i = 1; i < power; i++) {
-            result = result * number;
+    private static int powerOf(int number, int power) {
+        if (power == 0) return 1;
+        int result = 1;
+        for (int i = 0; i < power; i++) {
+            result *= number;
         }
         return result;
     }
 
-    private static int[] numberToArray (int number){
+    private static int[] numberToArray(int number) {
+        if (number == 0) return new int[]{0};
 
-        int[] temp = new int[32];
-        int reminder = 0;
-        int counter = 0;
-
-        for (int i = 0; i <= number; i++) {
-            reminder = number%2;
-            temp[i] = reminder;
-            number = number/10;
-            if(number < 10){
-                temp[i+1] = number%2;
-            }
-            counter++;
+        int tempNumber = number;
+        int length = 0;
+        
+        // Calculate length first
+        while (tempNumber > 0) {
+            tempNumber /= 10;
+            length++;
         }
 
-        int[] reversedResult = new int[counter+1];
-
-        for(int i = counter, j = 0; i >= 0; i--, j++){
-            reversedResult[j] = temp[i];
+        int[] result = new int[length];
+        for (int i = length - 1; i >= 0; i--) {
+            result[i] = number % 10;
+            number /= 10;
         }
 
-        return reversedResult;
+        return result;
     }
 
-    public static int BinaryToDecimal (int binaryNumber){
-
+    public static int binaryToDecimal(int binaryNumber) {
         int[] arrayedNumber = numberToArray(binaryNumber);
-        int sequence = arrayedNumber.length-1;
+        int sequence = arrayedNumber.length - 1;
         int result = 0;
 
-        for (int i = 0; i < arrayedNumber.length-1; i++) {
-            if(arrayedNumber[i] != 0) {
+        // FIXED: Changed condition from arrayedNumber.length - 1 to arrayedNumber.length
+        for (int i = 0; i < arrayedNumber.length; i++) {
+            if (arrayedNumber[i] != 0) {
                 result += arrayedNumber[i] * powerOf(2, sequence);
-                sequence--;
-            }else {
-                sequence--;
             }
+            sequence--;
         }
         return result;
     }
-
 }
